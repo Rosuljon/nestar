@@ -53,4 +53,14 @@ export class MemberService {
 		console.log('MemberService.getMember called');
 		return 'Member details retrieved successfully';
 	}
+
+	//Admin
+
+	//Authorization : Admin
+	public async getAllMembersByAdmin(): Promise<string> {
+		return 'All members retrieved successfully';
+	}
+	public async updateMemberByAdmin(): Promise<string> {
+		return 'Member updated successfully by admin';
+	}
 }

@@ -24,7 +24,7 @@ import { log } from 'console';
 					message:
 						error?.extensions?.exception?.response?.message || error?.extensions?.response?.message || error?.message,
 				};
-				console.log('graphQLFormattedError', graphQLFormattedError);
+				console.log('GRAPHQL GLOBAL ERROR:', graphQLFormattedError);
 				return graphQLFormattedError;
 			},
 		}),

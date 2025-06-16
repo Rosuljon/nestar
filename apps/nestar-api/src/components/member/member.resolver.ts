@@ -6,6 +6,16 @@ import { UseGuards } from '@nestjs/common';
 import { AuthGuard } from '../auth/guards/auth.guard';
 import { AuthMember } from '../auth/decorators/authMember.decorator';
 import { ObjectId } from 'mongoose';
+import { Roles } from '../auth/decorators/roles.decorator';
+import { MemberType } from '../../libs/enums/member.enum';
+import { RolesGuard } from '../auth/guards/roles.guard';
+
+// 1. Middleware
+// 2. Guard
+// 3. Interceptor (before controller call)
+// 4. Pipe (parameter-level)
+// 5. Controller (handler)
+// 6. Interceptor (after)
 
 @Resolver()
 export class MemberResolver {
@@ -39,6 +49,15 @@ export class MemberResolver {
 		console.log('memberNick => ', memberNick);
 		return `Hi I am ${memberNick}`;
 	}
+	@Roles(MemberType.USER, MemberType.AGENT)
+	@UseGuards(RolesGuard)
+	@Query(() => String)
+	public async checkAuthRoles(@AuthMember() member: Member): Promise<string> {
+		console.log('MemberResolver.checkAuthRoles called');
+
+		console.log('memberNick => ', member.memberNick);
+		return `Hi ${member.memberNick} and you are a ${member.memberType}`;
+	}
 	@Query(() => String)
 	public async getMember(): Promise<string> {
 		console.log('MemberResolver.getMember called');
@@ -49,6 +68,8 @@ export class MemberResolver {
 	//Admin
 
 	//Authorization : Admin
+	@Roles(MemberType.ADMIN)
+	@UseGuards(RolesGuard)
 	@Mutation(() => String)
 	public async getAllMembersByAdmin(): Promise<string> {
 		console.log('MemberResolver.getAllMembersByAdmin called');

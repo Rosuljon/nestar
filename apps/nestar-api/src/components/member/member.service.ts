@@ -38,7 +38,7 @@ export class MemberService {
 		} else if (response.memberStatus === MemberStatus.BLOCK) {
 			throw new InternalServerErrorException(Message.BLOCKED_USER);
 		}
-		const isMatch = await this.authService.comparePasswords(input.memberPassword, response.memberPassword);
+		const isMatch = await this.authService.comparePasswords(memberPassword, response.memberPassword);
 		if (!isMatch) {
 			throw new InternalServerErrorException(Message.WRONG_PASSWORD);
 		}

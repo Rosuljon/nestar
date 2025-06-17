@@ -28,7 +28,6 @@ export class MemberResolver {
 		return this.memberService.signup(input);
 	}
 
-	@UseGuards(AuthGuard)
 	@Mutation(() => Member)
 	public async login(@Args('input') input: LoginInput): Promise<Member> {
 		console.log('MemberResolver.login called');

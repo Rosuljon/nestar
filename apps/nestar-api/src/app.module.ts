@@ -18,11 +18,19 @@ import { T } from './libs/types/common';
 			uploads: false,
 			autoSchemaFile: true,
 			formatError: (error: T) => {
+				const originalError = error?.extensions?.originalError;
+
+				const message =
+					(Array.isArray(originalError?.message) && originalError.message.join(', ')) ||
+					error?.extensions?.exception?.response?.message ||
+					error?.extensions?.response?.message ||
+					error?.message;
+
 				const graphQLFormattedError = {
-					code: error?.extensions.code,
-					message:
-						error?.extensions?.exception?.response?.message || error?.extensions?.response?.message || error?.message,
+					code: error?.extensions?.code || 'INTERNAL_SERVER_ERROR',
+					message,
 				};
+
 				console.log('GRAPHQL GLOBAL ERROR:', graphQLFormattedError);
 				return graphQLFormattedError;
 			},

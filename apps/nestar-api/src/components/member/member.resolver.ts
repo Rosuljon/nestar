@@ -180,6 +180,7 @@ export class MemberResolver {
 				uploadedImages[index] = url;
 			} catch (err) {
 				console.log('Error, file missing!');
+				throw new Error(Message.BAD_REQUEST);
 			}
 		});
 

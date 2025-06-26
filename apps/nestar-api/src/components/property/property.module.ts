@@ -15,5 +15,6 @@ import { MemberModule } from '../member/member.module';
 		MemberModule,
 	],
 	providers: [PropertyService, PropertyResolver],
+	exports: [PropertyService],
 })
 export class PropertyModule {}

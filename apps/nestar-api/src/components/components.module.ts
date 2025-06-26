@@ -12,12 +12,12 @@ import { BoardArticleModule } from './board-article/board-article.module';
 	imports: [
 		MemberModule,
 		PropertyModule,
+		BoardArticleModule,
 		AuthModule,
 		CommentModule,
 		LikeModule,
 		ViewModule,
 		FollowModule,
-		BoardArticleModule,
 	],
 })
 export class ComponentsModule {}

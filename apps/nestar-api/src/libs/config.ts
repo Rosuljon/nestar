@@ -1,6 +1,7 @@
 import { ObjectId } from 'bson';
 import { v4 as uuidv4 } from 'uuid';
 import * as path from 'path';
+import { T } from './types/common';
 
 //available Sorts for DTOs
 export const availableAgentSorts = ['createdAt', 'updatedAt', 'memberLikes', 'memberViews', 'memberRank'];
@@ -55,4 +56,38 @@ export const lookupFollowerData = {
 		foreignField: '_id',
 		as: 'followerData',
 	},
+};
+
+export const lookupAuthMemberLiked = (memberId: T, targetRefId: string = '$_id') => {
+	return {
+		$lookup: {
+			from: 'likes', // Qaysi kolleksiyadan ma'lumot olinadi
+			let: {
+				localLikeRefId: targetRefId, // Mahalliy qiymat (parent hujjatdagi ID)
+				localMemberId: memberId, // Kiruvchi memberId (avtorizatsiyalangan user)
+				localMyFavorite: true, // Doimiy true qiymat
+			},
+			pipeline: [
+				{
+					$match: {
+						$expr: {
+							$and: [
+								{ $eq: ['$likeRefId', '$$localLikeRefId'] }, // likeRefId == targetRefId
+								{ $eq: ['$memberId', '$$localMemberId'] }, // memberId == current user
+							],
+						},
+					},
+				},
+				{
+					$project: {
+						_id: 0, // _id ni chiqarma
+						memberId: 1, // memberId ni ko‘rsat
+						likeRefId: 1, // likeRefId ni ko‘rsat
+						myFavorite: '$$localMyFavorite', // Faqat true qiymat kiritiladi
+					},
+				},
+			],
+			as: 'meLiked', // Bu lookup natijasi ushbu nom bilan chiqadi
+		},
+	};
 };

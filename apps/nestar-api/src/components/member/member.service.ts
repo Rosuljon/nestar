@@ -88,8 +88,9 @@ export class MemberService {
 				targetMember.memberViews += 1;
 			}
 			const likeInput = { memberId: memberId, likeRefId: targetId, likeGroup: LikeGroup.MEMBER };
+			//murojatchi Targetga like bosganmi
 			targetMember.meLiked = await this.likeService.checkLikeExistance(likeInput);
-
+			//murojatchi Targetni follow qilganmi
 			targetMember.meFollowed = await this.checkSubscription(memberId, targetId);
 		}
 

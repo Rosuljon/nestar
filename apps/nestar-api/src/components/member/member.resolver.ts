@@ -60,7 +60,7 @@ export class MemberResolver {
 		console.log('MemberResolver.checkAuthRoles called');
 
 		console.log('memberNick => ', member.memberNick);
-		return `Hi ${member.memberNick} and you are a ${member.memberType}`;
+		return `Hi ${member.memberNick} and you are a ${member.memberType} and your id is ${member._id}`;
 	}
 
 	// Update Member

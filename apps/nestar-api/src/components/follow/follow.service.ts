@@ -99,19 +99,13 @@ export class FollowService {
 	public async getMemberFollowers(memberId: ObjectId, input: FollowInquiry): Promise<Followers> {
 		const { page, limit, search } = input;
 		if (!search?.followingId) throw new InternalServerErrorException(Message.BAD_REQUEST);
-		const match: T = {
-			followingId: shapeIntoMongoObjectId(search?.followingId),
-		};
+		const match: T = { followingId: search?.followingId };
 		console.log(match);
 
 		const result = await this.followModel
 			.aggregate([
-				{
-					$match: match,
-				},
-				{
-					$sort: { createdAt: Direction.DESC },
-				},
+				{ $match: match },
+				{ $sort: { createdAt: Direction.DESC } },
 				{
 					$facet: {
 						list: [
@@ -121,7 +115,7 @@ export class FollowService {
 							// meFollowed
 							lookupFollowerData,
 							{
-								$unwind: '$followingData',
+								$unwind: '$followerData',
 							},
 						],
 						metaCounter: [{ $count: 'total' }],

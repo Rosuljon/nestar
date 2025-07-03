@@ -84,6 +84,17 @@ export class PropertyResolver {
 		return await this.propertyService.getFavorites(memberId, input);
 	}
 
+	//Get Visited
+	@UseGuards(AuthGuard)
+	@Query(() => Properties)
+	public async getVisited(
+		@Args('input') input: OrdinaryInquiry,
+		@AuthMember('_id') memberId: ObjectId,
+	): Promise<Properties> {
+		console.log('PropertyResolver.getVisited called');
+		return await this.propertyService.getVisited(memberId, input);
+	}
+
 	//Get Agent Properties
 	@Roles(MemberType.AGENT)
 	@UseGuards(RolesGuard)

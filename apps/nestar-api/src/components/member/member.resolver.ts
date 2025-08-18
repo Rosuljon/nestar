@@ -111,7 +111,7 @@ export class MemberResolver {
 	// Get All Members By Admin
 	@Roles(MemberType.ADMIN)
 	@UseGuards(RolesGuard)
-	@Mutation(() => Members)
+	@Query(() => Members)
 	public async getAllMembersByAdmin(@Args('input') input: MembersInquiry): Promise<Members> {
 		console.log('MemberResolver.getAllMembersByAdmin called');
 
